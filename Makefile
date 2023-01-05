@@ -6,7 +6,9 @@ OBJ_DIR = $(BUILD_DIR)/obj_dir
 VSRC_DIR = $(BUILD_DIR)/vsrc
 CSRC_DIR = $(BUILD_DIR)/csrc
 BIN = $(BUILD_DIR)/$(TOPNAME)
-$(shell mkdir -p $(NVBOARD_SUP_DIR) && mkdir -p $(BUILD_DIR))
+ifneq ($(shell mkdir -p $(NVBOARD_SUP_DIR) $(BUILD_DIR) $(OBJ_DIR) $(VSRC_DIR) $(CSRC_DIR); echo $$?),0)
+$(error !)
+endif
 
 INC_PATH ?=
 
@@ -20,7 +22,10 @@ SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
 $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
-$(shell cd $(abspath .) && mkdir -p $(VSRC_DIR) && sbt "runMain $(TOPNAME) --target-dir $()")
+ifneq ($(shell sbt "runMain $(TOPNAME) --target-dir $(VSRC_DIR)"),0)
+$(error !)
+endif
+
 # project source
 VSRCS = $(shell find $(VSRC_DIR) -name "*.v")
 CSRCS = $(shell find $(CSRC_DIR) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
@@ -47,6 +52,6 @@ run: $(BIN)
 	@$^
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(NVBOARD_SUP_DIR)
 
 .PHONY: default all clean run
