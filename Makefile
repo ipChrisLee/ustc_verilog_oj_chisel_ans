@@ -1,27 +1,29 @@
 TOPNAME = Top
-NXDC_FILES = constr/top.nxdc
+NVBOARD_SUP_DIR=./nvboard-sup
+NXDC_FILES = $(NVBOARD_SUP_DIR)/constr/Top.nxdc
+BUILD_DIR = $(NVBOARD_SUP_DIR)/build
+OBJ_DIR = $(BUILD_DIR)/obj_dir
+VSRC_DIR = $(BUILD_DIR)/vsrc
+CSRC_DIR = $(BUILD_DIR)/csrc
+BIN = $(BUILD_DIR)/$(TOPNAME)
+$(shell mkdir -p $(NVBOARD_SUP_DIR) && mkdir -p $(BUILD_DIR))
+
 INC_PATH ?=
 
 VERILATOR = verilator
-VERILATOR_CFLAGS += -MMD --build -cc  \
-				-O3 --x-assign fast --x-initial fast --noassert
-
-BUILD_DIR = ./build
-OBJ_DIR = $(BUILD_DIR)/obj_dir
-BIN = $(BUILD_DIR)/$(TOPNAME)
+VERILATOR_CFLAGS += -MMD --build -cc -O3 --x-assign fast --x-initial fast --noassert
 
 default: $(BIN)
-
-$(shell mkdir -p $(BUILD_DIR))
 
 # constraint file
 SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
 $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
+$(shell cd $(abspath .) && mkdir -p $(VSRC_DIR) && sbt "runMain $(TOPNAME) --target-dir $()")
 # project source
-VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
-CSRCS = $(shell find $(abspath ./csrc) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
+VSRCS = $(shell find $(VSRC_DIR) -name "*.v")
+CSRCS = $(shell find $(CSRC_DIR) -name "*.c" -or -name "*.cc" -or -name "*.cpp")
 CSRCS += $(SRC_AUTO_BIND)
 
 # rules for NVBoard
