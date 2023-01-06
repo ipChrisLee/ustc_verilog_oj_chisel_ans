@@ -36,4 +36,6 @@ mv "${SBT_TMP}" build.sbt
 if [ -n "${NEW_GIT}" ];then
 	rm -rf .git
 	git init
+	sed -i "s/^build.sbt//" .gitignore
+	sed -i "s/^CMakeLists.txt//" .gitignore
 fi
