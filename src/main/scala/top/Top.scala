@@ -1,6 +1,5 @@
 package top
 import chisel3._
-import bypass.Bypass
 
 class Top extends Module {
   val io = IO(new Bundle {
@@ -21,12 +20,8 @@ class Top extends Module {
   }
 
   when(io.loadingValues) {
-    val byPassX = Module(new Bypass())
-    byPassX.io.inValue := io.value1
-    x                  := byPassX.io.outValue
-    val byPassY = Module(new Bypass())
-    byPassY.io.inValue := io.value2
-    y                  := byPassY.io.outValue
+    x:=io.value1
+    y:=io.value2
   }
 
   io.outputGCD   := x

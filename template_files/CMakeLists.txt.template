@@ -1,38 +1,69 @@
 cmake_minimum_required(VERSION 3.22)
-project(Test)
+project(__CMAKE_PROJ_NAME)
 
-# sbt
-# line for SBT_PATH
+add_executable(__CMAKE_EXE_NAME)
 
+# config
+set(CONFIG_USING_NVBOARD "n")
+
+# Check: sbt
+set(SBT_PATH __SBT_PATH)
 if (NOT SBT_PATH)
 	message(FATAL_ERROR "Install sbt and run startup.sh first!")
 endif ()
 
+# Check: verilator
 find_package(verilator HINTS $ENV{VERILATOR_ROOT} ${VERILATOR_ROOT})
 if (NOT verilator_FOUND)
 	message(FATAL_ERROR "Verilator was not found. Either install it, or set the VERILATOR_ROOT environment variable")
 endif ()
 
-set(GEN_VERILOG_TOP_FILE sim_src/generated_files/verilog/Top.v)
-file(GLOB_RECURSE ALL_CHISEL_SRC src/*.scala)
+# for generated files
+set(GEN_FILE_FOLDER "${PROJECT_BINARY_DIR}/generated")
+file(MAKE_DIRECTORY "${GEN_FILE_FOLDER}")
 
-message($ENV{PATH})
-
-add_custom_command(
-		OUTPUT ${GEN_VERILOG_TOP_FILE}
-		COMMAND ${SBT_PATH} "runMain TopApp --target-dir sim_src/generated_files/verilog"
-		DEPENDS ${ALL_CHISEL_SRC}
+# Check: nvboard
+set(NVBOARD_HOME "/home/iplee/Main/Proj/nscscc2023/proj_main/NVBoard")
+if ((DEFINED NVBOARD_HOME) AND ("${CONFIG_USING_NVBOARD}" STREQUAL "y"))
+	message("NVBoard Found : ${NVBOARD_HOME}")
+	set(NVBOARD_LIB "${NVBOARD_HOME}/build/nvboard.a")
+	set(NVBOARD_INC "${NVBOARD_HOME}/include")
+	set(NVBOARD_CONSTR_PY "${NVBOARD_HOME}/scripts/auto_pin_bind.py")
+	set(NVBOARD_AUTO_CONF_CPP "${GEN_FILE_FOLDER}/auto_bind.cpp")
+	target_link_libraries(__CMAKE_EXE_NAME PUBLIC ${NVBOARD_LIB})
+	target_include_directories(__CMAKE_EXE_NAME PUBLIC ${NVBOARD_INC})
+	add_custom_command(
+		OUTPUT "${NVBOARD_AUTO_CONF_CPP}"
+		COMMAND export NVBOARD_HOME=${NVBOARD_HOME}
+		COMMAND python3 ${NVBOARD_CONSTR_PY} "sim_src/src/Top.nxdc" "${NVBOARD_AUTO_CONF_CPP}"
+		DEPENDS sim_src/src/Top.nxdc
+		WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 		VERBATIM
+	)
+	target_sources(__CMAKE_EXE_NAME PUBLIC "${NVBOARD_AUTO_CONF_CPP}")
+else()
+	message("NVBoard NOT found or not using!")
+endif ()
+
+
+
+# ChiselFiles => VerilogFiles
+add_custom_command(
+	TARGET __CMAKE_EXE_NAME PRE_BUILD
+	COMMAND ${SBT_PATH} "runMain TopApp --target-dir sim_src/verilog_gen"
+	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+	VERBATIM
 )
 
-add_executable(
-		test
-		sim_src/src/main.cpp
-)
+# Rule{VerilogFiles => GenCppFiles}
 verilate(
-		test
-		SOURCES sim_src/generated_files/verilog/Top.v
-		TOP_MODULE Top
-		PREFIX V
-		INCLUDE_DIRS sim_src/generated_files/cpp_files
+	__CMAKE_EXE_NAME
+	SOURCES sim_src/verilog_gen/Top.v
+	TOP_MODULE Top
+)
+
+# Rule{Cpp => Exe}::user_src
+target_sources(
+	__CMAKE_EXE_NAME
+	PUBLIC sim_src/src/main.cpp
 )

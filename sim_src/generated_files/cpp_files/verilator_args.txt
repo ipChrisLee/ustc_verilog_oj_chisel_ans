@@ -1,1 +1,0 @@
-/usr/local/bin/verilator_bin;--compiler;gcc;--prefix;V;--Mdir;sim_src/generated_files/cpp_files;--make;cmake;--top;Top;--cc;sim_src/generated_files/verilog/Top.v
