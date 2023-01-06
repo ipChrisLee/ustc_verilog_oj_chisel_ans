@@ -4,11 +4,11 @@ CMAKE_EXE_NAME=test
 NEW_GIT=                        # create new git if you define NEW_GIT
 SBT_PATH="$(which sbt)"
 
-CMAKE_TMP=template_files/cmake.tmp
-SBT_TMP=template_files/sbt.tmp
+CMAKE_TMP=.template/cmake.tmp
+SBT_TMP=.template/sbt.tmp
 
-cp template_files/CMakeLists.txt.template "${CMAKE_TMP}"
-cp template_files/build.sbt.template "${SBT_TMP}"
+cp .template/CMakeLists.txt.template "${CMAKE_TMP}"
+cp .template/build.sbt.template "${SBT_TMP}"
 
 if [ -z "${SBT_PROJ_NAME}" ] || [ -z "${SBT_PATH}" ] || [ -z "${CMAKE_PROJ_NAME}" ] || [ -z "${CMAKE_EXE_NAME}" ];then
   echo "ERROR!"
