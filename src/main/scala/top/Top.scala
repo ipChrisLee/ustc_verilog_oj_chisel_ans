@@ -1,15 +1,8 @@
-// See README.md for license details.
-
-package gcd
-
+package top
 import chisel3._
+import bypass.Bypass
 
-/**
-  * Compute GCD using subtraction method.
-  * Subtracts the smaller from the larger until register y is zero.
-  * value in register x is then the GCD
-  */
-class GCD extends Module {
+class Top extends Module {
   val io = IO(new Bundle {
     val value1        = Input(UInt(16.W))
     val value2        = Input(UInt(16.W))
@@ -21,11 +14,19 @@ class GCD extends Module {
   val x = Reg(UInt())
   val y = Reg(UInt())
 
-  when(x > y) { x := x - y }.otherwise { y := y - x }
+  when(x > y) {
+    x := x - y
+  }.otherwise {
+    y := y - x
+  }
 
   when(io.loadingValues) {
-    x := io.value1
-    y := io.value2
+    val byPassX = Module(new Bypass())
+    byPassX.io.inValue := io.value1
+    x                  := byPassX.io.outValue
+    val byPassY = Module(new Bypass())
+    byPassY.io.inValue := io.value2
+    y                  := byPassY.io.outValue
   }
 
   io.outputGCD   := x
