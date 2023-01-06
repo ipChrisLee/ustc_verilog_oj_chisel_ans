@@ -9,3 +9,9 @@ fi
 
 sed "5s|.*|set(SBT_PATH \"""${SBT_PATH}""\")|" template_files/CMakeLists.txt.template > CMakeLists.txt
 sed "11s|.*|\tname := \"""${SBT_PROJ_NAME}""\",|" template_files/build.sbt.template > build.sbt
+
+TESTING=y
+if [ -n TESTING ];then
+	rm -rf .git
+	git init
+fi
