@@ -20,8 +20,8 @@ class Top extends Module {
   }
 
   when(io.loadingValues) {
-    x:=io.value1
-    y:=io.value2
+    x := io.value1
+    y := io.value2
   }
 
   io.outputGCD   := x
