@@ -18,3 +18,10 @@
    2. 之后如果Chisel更改比较大的话，就需要重新编写C++代码（比如输入输出接口不一样之类的）。
    3. 虽然我还没实验出来，但是如果第1步出错或者出了奇怪的问题的话，可以尝试删除cmake生成的文件夹（一般是`cmake-build-debug`或者`cmake-build-release`），然后[重新载入cmake项目](https://www.jetbrains.com/help/clion/reloading-project.html)。
 
+
+
+目前可能的BUG，使用时如果发现类似问题请在相关issue下回复。
+
+1. 在构建完CMake项目后，新添加的.scala文件无法被CMake识别，也就无法让CMake自动重新构建。
+
+   相关issue：[我感觉目前实现的CMakeLists.txt依赖管理有BUG](https://github.com/BJTU-NSCSCC-2023/chisel-template/issues/2)。
