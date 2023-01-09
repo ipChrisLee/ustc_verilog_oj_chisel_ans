@@ -1,9 +1,13 @@
 #pragma once
 #include <cstdlib>
-#define NVBOARD_HOME "/home/iplee/Main/Proj/nscscc2023/proj_main/NVBoard"
 
+#ifndef NVBOARD_HOME
+  #define NVBOARD_HOME ""
+#else
+  #define HAS_NVBOARD true
+#endif
 namespace nvboard{
 static void init(){
-	putenv(("NVBOARD_HOME=" NVBOARD_HOME));
+	putenv(const_cast<char *>("NVBOARD_HOME=" NVBOARD_HOME));
 }
 }

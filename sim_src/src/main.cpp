@@ -5,19 +5,22 @@
 
 #include <VTop.h>
 
-#include "nvboard_include/nvboard.h"
-
 #include <iostream>
 #include <memory>
 
+#ifdef HAS_NVBOARD
+#include "nvboard_include/nvboard.h"
 void nvboard_bind_all_pins(VTop *);
+#endif
 
 std::unique_ptr<VerilatedContext> pContext;
 std::unique_ptr<VerilatedVcdC> tfp;
 std::unique_ptr<VTop> pTop;
 
 void step_and_dump_wave() {
+#ifdef HAS_NVBOARD
 	nvboard_update();
+#endif
 	pTop->clock = !pTop->clock;
 	pTop->eval();
 	pContext->timeInc(1);
@@ -31,8 +34,10 @@ void sim_init() {
 	pContext->traceEverOn(true);
 	pTop->trace(tfp.get(), 0);
 	tfp->open(".tmp/dump.vcd");
+#ifdef HAS_NVBOARD
 	nvboard_bind_all_pins(pTop.get());
 	nvboard_init();
+#endif
 }
 
 void sim_exit() {
@@ -43,7 +48,6 @@ void sim_exit() {
 int main() {
 	nvboard::init();
 	sim_init();
-	using BS = std::bitset<10>;
 	for (auto s = size_t(0); s < (1 << 10); ++s) {
 		pTop->io_sw = s;
 		step_and_dump_wave();
