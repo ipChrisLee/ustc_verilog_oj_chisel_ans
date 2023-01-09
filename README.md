@@ -14,6 +14,8 @@
 
    也请确认，你执行`./startup.sh`的命令行有`NVBOARD_HOME`这个环境变量（`./startup.sh`会做这个检查）。
 
+4. 为了使用`.scalafmt.conf`，请参考[这个文里面IDEA部分](https://github.com/BJTU-NSCSCC-2023/notebooks/blob/master/Chisel/env_startup.md)的说明，将IDEA的Scala格式设置成“使用`.scalafmt.conf`”。
+
 
 
 编辑、调试项目的流程：
