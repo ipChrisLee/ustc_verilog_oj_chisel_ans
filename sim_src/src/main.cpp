@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <filesystem>
 
 #ifdef HAS_NVBOARD
 #include "nvboard_include/nvboard.h"
@@ -33,6 +34,7 @@ void sim_init() {
 	pTop = std::make_unique<VTop>("Top");
 	pContext->traceEverOn(true);
 	pTop->trace(tfp.get(), 0);
+	std::filesystem::create_directory(".tmp");
 	tfp->open(".tmp/dump.vcd");
 #ifdef HAS_NVBOARD
 	nvboard_bind_all_pins(pTop.get());
@@ -58,9 +60,11 @@ int main() {
 			std::cout << "std answer = " << stdAns << std::endl;
 		}
 	}
+#ifdef HAS_NVBOARD
 	while(!(pTop->io_sw>>15)){
 		step_and_dump_wave();
 	}
+#endif
 	sim_exit();
 	return 0;
 }

@@ -45,10 +45,11 @@ if ((DEFINED NVBOARD_HOME) AND ("${CONFIG_USING_NVBOARD}" STREQUAL "y"))
 		VERBATIM
 	)
 	target_sources(__CMAKE_EXE_NAME PUBLIC "${NVBOARD_AUTO_CONF_CPP}")
-	target_link_libraries(test PUBLIC SDL2 PUBLIC SDL2_image)
-	target_compile_definitions(test PUBLIC "NVBOARD_HOME=\"__NVBOARD_HOME\"")
+	target_link_libraries(__CMAKE_EXE_NAME PUBLIC SDL2 PUBLIC SDL2_image)
+	target_compile_definitions(__CMAKE_EXE_NAME PUBLIC "NVBOARD_HOME=\"__NVBOARD_HOME\"" HAS_NVBOARD)
 else()
 	message("NVBoard NOT found or not using!")
+	target_compile_definitions(fTest PUBLIC "NVBOARD_HOME=\"\"")
 endif ()
 
 
