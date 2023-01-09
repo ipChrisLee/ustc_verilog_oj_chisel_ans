@@ -1,0 +1,12 @@
+#pragma once
+#include <cstdlib>
+
+#define NVBOARD_HOME "__NVBOARD_HOME"
+#define DEFAULT_NVBOARD_HOME "__NVBOARD_HOME"
+#if NVBOARD_HOME == ""
+
+namespace nvboard{
+static void init(){
+	putenv(("NVBOARD_HOME=" NVBOARD_HOME));
+}
+}

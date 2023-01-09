@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 project(__CMAKE_PROJ_NAME)
 
+set(CMAKE_CXX_STANDARD 17)
+
 add_executable(__CMAKE_EXE_NAME)
 
 # config
-set(CONFIG_USING_NVBOARD "n")
+set(CONFIG_USING_NVBOARD "y")
 
 # Check: sbt
 set(SBT_PATH __SBT_PATH)
@@ -65,6 +67,8 @@ verilate(
 	__CMAKE_EXE_NAME
 	SOURCES sim_src/verilog_gen/Top.v
 	TOP_MODULE Top
+	TRACE_THREADS
+	TRACE # TRACE_FST   # choose one
 )
 
 # Rule{Cpp => Exe}::user_src

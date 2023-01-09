@@ -1,25 +1,62 @@
-#include <iostream>
+#include "init.hpp"
+
+#include <verilated.h>
+#include <verilated_vcd_c.h>
 
 #include <VTop.h>
 
-VTop vTop;
+#include "nvboard_include/nvboard.h"
 
-void singleCycle() {
-	vTop.clock = 0;
-	vTop.eval();
-	vTop.clock = 1;
-	vTop.eval();
+#include <iostream>
+#include <memory>
+
+void nvboard_bind_all_pins(VTop *);
+
+std::unique_ptr<VerilatedContext> pContext;
+std::unique_ptr<VerilatedVcdC> tfp;
+std::unique_ptr<VTop> pTop;
+
+void step_and_dump_wave() {
+	nvboard_update();
+	pTop->clock = !pTop->clock;
+	pTop->eval();
+	pContext->timeInc(1);
+	tfp->dump(pContext->time());
+}
+
+void sim_init() {
+	pContext = std::make_unique<VerilatedContext>();
+	tfp = std::make_unique<VerilatedVcdC>();
+	pTop = std::make_unique<VTop>("Top");
+	pContext->traceEverOn(true);
+	pTop->trace(tfp.get(), 0);
+	tfp->open(".tmp/dump.vcd");
+	nvboard_bind_all_pins(pTop.get());
+	nvboard_init();
+}
+
+void sim_exit() {
+	step_and_dump_wave();
+	tfp->close();
 }
 
 int main() {
-	std::cout << "GCD" << std::endl;
-	vTop.io_value1 = 15;
-	vTop.io_value2 = 12;
-	vTop.io_loadingValues = 1;
-	while (!vTop.io_outputValid) {
-		singleCycle();
-		if (vTop.io_loadingValues) { vTop.io_loadingValues = 0; }
-		std::cout << vTop.io_outputGCD << " " << bool(vTop.io_outputValid) << std::endl;
+	nvboard::init();
+	sim_init();
+	using BS = std::bitset<10>;
+	for (auto s = size_t(0); s < (1 << 10); ++s) {
+		pTop->io_sw = s;
+		step_and_dump_wave();
+		auto simResult = pTop->io_led;
+		auto stdAns = ((s >> (2 + (s % 4) * 2)) & 0x3);
+		if (simResult != stdAns) {
+			std::cout << "sim result = " << simResult << std::endl;
+			std::cout << "std answer = " << stdAns << std::endl;
+		}
 	}
+	while(!(pTop->io_sw>>15)){
+		step_and_dump_wave();
+	}
+	sim_exit();
 	return 0;
 }
