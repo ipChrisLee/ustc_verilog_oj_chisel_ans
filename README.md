@@ -38,7 +38,7 @@
 
 编辑、调试项目的流程：
 
-1. 打开IDEA（**一定要先打开IDEA再打开CLion！**），更改Chisel代码，通过Chisel的Test等完成初步验证。
+1. 打开IDEA，更改Chisel代码，通过Chisel的Test等完成初步验证。
 2. 之后如果需要上Verilog验证的话：
    1. 打开CLion，**先build或者run一下，刷新Verilog代码**。
    2. 之后如果Chisel更改比较大的话，就需要重新编写C++代码（比如输入输出接口不一样之类的）。
