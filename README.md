@@ -6,17 +6,35 @@
    3. 通过更改`CMAKE_EXE_NAME`更改CMake里的可执行文件target名。
    4. 如果这是一个新项目而不是对Template的更改的话，你可以设置`NEW_GIT=y`重新建立Git仓库。
 
-2. **在项目根目录**执行`startup.sh`
+   **注意：SBT的项目名和CMake的项目名不要相同！**
 
-3. 如果你的项目需要用到`NVBOARD`的话，在CMakeLists.txt里将`set(CONFIG_USING_NVBOARD "n")`设置成`set(CONFIG_USING_NVBOARD "y")`。
+2. **在项目根目录**执行`startup.sh`。
+
+3. 如果你的项目需要用到`NVBOARD`的话，在CMakeLists.txt里将`set(CONFIG_USING_NVBOARD "n")`设置成`set(CONFIG_USING_NVBOARD "y")`。反之如果你不需要用NVBoard的话，同理。
 
    此外，请确认在NVBoard项目根目录执行了`make -f scripts/nvboard.mk nvboard-archive`。这个命令会编译NVBoard并且归纳成了在NVBoard项目根目录下build/nvboard.a链接库。
 
    也请确认，你执行`./startup.sh`的命令行有`NVBOARD_HOME`这个环境变量（`./startup.sh`会做这个检查）。
 
-4. 为了使用`.scalafmt.conf`，请参考[这个文里面IDEA部分](https://github.com/BJTU-NSCSCC-2023/notebooks/blob/master/Chisel/env_startup.md)的说明，将IDEA的Scala格式设置成“使用`.scalafmt.conf`”。
+4. 打开IDEA，此时IDEA应该能识别出Scala项目（在右下角通知），等待SBT载入完成。
 
+   之后点进`src/main/scala/TopApp`，可以看到一个运行符号，点击，然后选择“Modify Run Configuration”即可编辑运行信息。
 
+   如果需要保存的话，需要点击右上角的"Select Run/Debug Configuration"，再点击"Edit Configuration"：
+
+   ![](.md_src/Screenshot_20230110_184031.png)
+
+   然后在弹出窗口点击保存图标：
+
+   ![](.md_src/Screenshot_20230110_183847.png)
+
+   即可完成保存。
+
+5. 打开CLion，此时CLion应该能识别出是CMake项目，等待CMake载入完成。
+
+注意：
+
+* 为了使用`.scalafmt.conf`，请参考[这个文里面IDEA部分](https://github.com/BJTU-NSCSCC-2023/notebooks/blob/master/Chisel/env_startup.md)的说明，将IDEA的Scala格式设置成“使用`.scalafmt.conf`”。
 
 编辑、调试项目的流程：
 
