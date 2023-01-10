@@ -9,6 +9,12 @@ if [ -z "${SBT_PROJ_NAME}" ] || [ -z "${SBT_PATH}" ] || [ -z "${CMAKE_PROJ_NAME}
   exit 1
 fi
 
+if [ "${SBT_PROJ_NAME}" = "${CMAKE_PROJ_NAME}" ];then
+  echo "ERROR! SBT_PROJ_NAME should be different with CMAKE_PROJ_NAME !"
+  exit 1
+fi
+
+
 CMAKE_TMP=.template/cmake.tmp
 SBT_TMP=.template/sbt.tmp
 
