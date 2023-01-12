@@ -4,6 +4,12 @@ io_vga_hSync VGA_VSYNC
 io_vga_vSync VGA_HSYNC
 io_vga_blankN VGA_BLANK_N
 
+io_btn_c BTNC
+io_btn_u BTNU
+io_btn_d BTND
+io_btn_l BTNL
+io_btn_r BTNR
+
 io_vga_r (VGA_R7, VGA_R6, VGA_R5, VGA_R4, VGA_R3, VGA_R2, VGA_R1, VGA_R0 )
 io_vga_g (VGA_G7, VGA_G6, VGA_G5, VGA_G4, VGA_G3, VGA_G2, VGA_G1, VGA_G0)
 io_vga_b (VGA_B7, VGA_B6, VGA_B5, VGA_B4, VGA_B3, VGA_B2, VGA_B1, VGA_B0)
