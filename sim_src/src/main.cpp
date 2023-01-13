@@ -40,6 +40,13 @@ void sim_init() {
 	nvboard_bind_all_pins(pTop.get());
 	nvboard_init();
 #endif
+	//	reset
+	pTop->reset = true;
+	for (int n = 100; n--;) {
+		step_and_dump_wave();
+	}
+	pTop->reset = false;
+
 }
 
 void sim_exit() {
