@@ -41,6 +41,8 @@ void sim_init() {
 	nvboard_init();
 #endif
 	//	reset
+	pTop->reset = false;
+	step_and_dump_wave();
 	pTop->reset = true;
 	for (int n = 100; n--;) {
 		step_and_dump_wave();
