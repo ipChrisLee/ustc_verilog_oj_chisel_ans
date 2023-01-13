@@ -18,6 +18,7 @@ lazy val root = (project in file("."))
       "-language:reflectiveCalls",
       "-deprecation",
       "-feature",
+      "-Werror",
       "-Xcheckinit",
       "-P:chiselplugin:genBundleElements",
     ),
