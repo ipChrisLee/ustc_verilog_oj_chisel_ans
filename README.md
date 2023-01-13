@@ -36,6 +36,7 @@
 
 * 为了使用`.scalafmt.conf`，请参考[这个文里面IDEA部分](https://github.com/BJTU-NSCSCC-2023/notebooks/blob/master/Chisel/env_startup.md)的说明，将IDEA的Scala格式设置成“使用`.scalafmt.conf`”。
 * 如果上述流程走完，发现CLion或者IDEA没有成功识别项目，那就File->Invalidate Caches->全选Optional->Invalidate and Restart，重启后点进CMakeListst.txt，点击Load CMake Project就行。这个应该是JB的bug。。。
+* C++和Scala默认开启了`-Werror`编译选项，用于避免不必要的bug，如果需要关闭请手动删除。此外需要注意：IDEA下使用自带的运行不会有build.sbt里的编译选项，建议在命令行里输入命令运行（如果命令行有历史功能的话也不麻烦）。
 
 编辑、调试项目的流程：
 
