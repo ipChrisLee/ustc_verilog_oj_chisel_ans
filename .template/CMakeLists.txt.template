@@ -49,7 +49,7 @@ if ((DEFINED NVBOARD_HOME) AND ("${CONFIG_USING_NVBOARD}" STREQUAL "y"))
 	target_compile_definitions(__CMAKE_EXE_NAME PUBLIC "NVBOARD_HOME=\"__NVBOARD_HOME\"" HAS_NVBOARD)
 else()
 	message("NVBoard NOT found or not using!")
-	target_compile_definitions(fTest PUBLIC "NVBOARD_HOME=\"\"")
+	target_compile_definitions(__CMAKE_EXE_NAME PUBLIC "NVBOARD_HOME=\"\"")
 endif ()
 
 
