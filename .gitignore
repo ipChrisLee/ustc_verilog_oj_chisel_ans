@@ -344,6 +344,3 @@ hs_err_pid*
 cmake-build-debug
 cmake-build-release
 
-# for template, ignore build.sbt and CMakeLists.txt 
-build.sbt
-CMakeLists.txt
