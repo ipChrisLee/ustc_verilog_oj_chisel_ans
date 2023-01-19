@@ -2,3 +2,8 @@
 
 src/main/scala/answers下的就是答案。比如P0030和P0078是[https://verilogoj.ustc.edu.cn/oj/problem/30](https://verilogoj.ustc.edu.cn/oj/problem/30)和[https://verilogoj.ustc.edu.cn/oj/problem/78](https://verilogoj.ustc.edu.cn/oj/problem/78)的答案。
 
+刷题列表：
+
+* 入门
+  * [P0030**输出1**](https://verilogoj.ustc.edu.cn/oj/problem/30)
+  * [P0078**十进制计数器**](https://verilogoj.ustc.edu.cn/oj/problem/78)
