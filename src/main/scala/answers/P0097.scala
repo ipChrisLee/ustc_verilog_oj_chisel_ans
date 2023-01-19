@@ -14,7 +14,7 @@ class P0097 extends RawModule {
     when(state === s0) {
       state := Mux(in, s1, s0)
     }.elsewhen(state === s1) {
-      state := s2
+      state := Mux(in, s2, s0)
     }.elsewhen(state === s2) {
       state := Mux(in, s2, s0)
     }.otherwise {
