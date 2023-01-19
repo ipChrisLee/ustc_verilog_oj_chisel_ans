@@ -26,13 +26,33 @@
 
     《论Chisel的有限状态机有几种写法》。
 
-    实际上这题也可以不用这种鬼畜的写法。
+    实际上这题也可以不用我的鬼畜写法。
+    
+  * [P0099**秒表**](https://verilogoj.ustc.edu.cn/oj/problem/99)
 
 * 困难（可能）
 
   * [P0097**上升沿检测**](https://verilogoj.ustc.edu.cn/oj/problem/97)
 
-    这题槽点挺多的。
+    这题槽点挺多的，见后面的解析。
+  
+* 可能有问题的题
+
+  * [P0108**casez语句**](https://verilogoj.ustc.edu.cn/oj/problem/108)
+
+    有一说一，我没看懂这个输出和题意有什么关系。
+
+    此外，本题还是值得看一下的，可以学一下Chisel的某个库函数。
+    
+  * [P0139**优化编码器**](https://verilogoj.ustc.edu.cn/oj/problem/139)
+  
+    这题我的输出也很奇怪。。。我没太看懂我的输出波形为什么是那样的。
+  
+  * 
+
+
+
+
 
 
 
